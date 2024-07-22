@@ -93,6 +93,7 @@ async function showSuperheroDetails(heroId) {
     const hash = generateHash(ts, privateKey, publicKey);
     const url = `${apiUrl}/${heroId}?ts=${ts}&apikey=${publicKey}&hash=${hash}`;
     
+    
     showLoader();
     try {
         const response = await fetch(url);
