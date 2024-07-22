@@ -6,11 +6,18 @@ const cache = new Map();
 function generateHash(ts, privateKey, publicKey) {
     return CryptoJS.MD5(ts + privateKey + publicKey).toString();
 }
-function search(){
-    let debounceTimeout;
-    document.getElementById('searchBar').addEventListener('input', (e) => {
-        clearTimeout(debounceTimeout);
-        debounceTimeout = setTimeout(() => fetchSuperheroes(e.target.value), 200);
+function search() {
+    const searchBar = document.getElementById('searchBar');
+    const searchButton = document.getElementById('searchButton');
+
+    searchBar.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            fetchSuperheroes(e.target.value);
+        }
+    });
+
+    searchButton.addEventListener('click', () => {
+        fetchSuperheroes(searchBar.value);
     });
 }
 
@@ -22,7 +29,7 @@ function hideLoader() {
     document.getElementById('loader').style.display = 'none';
 }
 
-async function fetchSuperheroes(query = 'a', limit = 10, offset = 0) {
+async function fetchSuperheroes(query = 'a', limit = 12, offset = 0) {
     const cacheKey = `${query}-${limit}-${offset}`;
     if (cache.has(cacheKey)) {
         displaySuperheroes(cache.get(cacheKey));
